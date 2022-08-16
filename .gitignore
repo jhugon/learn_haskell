@@ -1,5 +1,3 @@
-*.hi
-*.o
 *.png
 .*.un~
-makeCharts
+dist-newstyle/
