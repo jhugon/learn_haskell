@@ -21,7 +21,8 @@ executable learn-haskell
   main-is:             Main.hs
   -- other-modules:
   -- other-extensions:
-  build-depends:       base >=4.13 && <4.14
+  build-depends:       base ^>=4.13
+
   -- hs-source-dirs:
   default-language:    Haskell2010
 
@@ -31,8 +32,29 @@ executable makeCharts
     Chebyshev
   -- other-extensions:
   build-depends:
-    base >=4.13 && <4.14,
+    base ^>=4.13,
     Chart ^>=1.9,
-    Chart-cairo
+    Chart-cairo,
+  -- hs-source-dirs:
+  default-language:    Haskell2010
+
+executable web
+  main-is:             web.hs
+  other-modules:
+    Chebyshev
+  -- other-extensions:
+  build-depends:
+    base ^>=4.13,
+    base-compat ^>=0.12,
+    mtl ^>=2.2,
+    bytestring ^>=0.10,
+    string-conversions ^>=0.4,
+    time ^>=1.9,
+    servant-server ^>= 0.19,
+    directory ^>=1.3,
+    aeson ^>=1.5,
+    wai ^>=3.2,
+    warp ^>=3.3,
+    
   -- hs-source-dirs:
   default-language:    Haskell2010
