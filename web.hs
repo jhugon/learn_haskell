@@ -29,34 +29,24 @@ import Servant
 import System.Directory
 import qualified Data.Aeson.Parser
 
-type UserAPI1 = "users" :> Get '[JSON] [User]
+import Chebyshev
 
-data User = User
-  { name :: String
-  , age :: Int
-  , email :: String
-  , registration_date :: Day
-  } deriving (Eq, Show, Generic)
+type API = "anint" :> Get '[JSON] Int
+        :<|> "factorial" :> Capture "N" Integer :> Get '[JSON] Integer
 
-instance ToJSON User
+server1 :: Server API
+server1 = return 36  :<|> factorialHandler
+    where factorialHandler :: Integer -> Handler Integer
+          factorialHandler n = return $ factorial n
 
-users1 :: [User]
-users1 =
-  [ User "Isaac Newton"    372 "isaac@newton.co.uk" (fromGregorian 1683  3 1)
-  , User "Albert Einstein" 136 "ae@mc2.org"         (fromGregorian 1905 12 1)
-  ]
-
-server1 :: Server UserAPI1
-server1 = return users1
-
-userAPI :: Proxy UserAPI1
-userAPI = Proxy
+apiProxy :: Proxy API
+apiProxy = Proxy
 
 -- 'serve' comes from servant and hands you a WAI Application,
 -- which you can think of as an "abstract" web application,
 -- not yet a webserver.
 app1 :: Application
-app1 = serve userAPI server1
+app1 = serve apiProxy server1
 
 main :: IO ()
 main = run 8081 app1
