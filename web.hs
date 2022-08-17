@@ -31,13 +31,29 @@ import qualified Data.Aeson.Parser
 
 import Chebyshev
 
-type API = "anint" :> Get '[JSON] Int
+type API = "isalive" :> Get '[PlainText,JSON] [Char]
         :<|> "factorial" :> Capture "N" Integer :> Get '[JSON] Integer
+        :<|> "fibonacci" :> Capture "N" Integer :> Get '[JSON] Integer
+        :<|> "chebyshev1st" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
+        :<|> "chebyshev2nd" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
 
 server1 :: Server API
-server1 = return 36  :<|> factorialHandler
-    where factorialHandler :: Integer -> Handler Integer
-          factorialHandler n = return $ factorial n
+server1 = return "OK"
+    :<|> factorialHandler 
+    :<|> fibonacciHandler 
+    :<|> chebyshev1stHandler
+    :<|> chebyshev2ndHandler
+         where factorialHandler :: Integer -> Handler Integer
+               factorialHandler n = return $ factorial n
+
+               fibonacciHandler :: Integer -> Handler Integer
+               fibonacciHandler n = return $ fibonacci n
+
+               chebyshev1stHandler :: Double -> Integer -> Handler Double
+               chebyshev1stHandler x n = return $ chebyshev1st x n
+
+               chebyshev2ndHandler :: Double -> Integer -> Handler Double
+               chebyshev2ndHandler x n = return $ chebyshev2nd x n
 
 apiProxy :: Proxy API
 apiProxy = Proxy
