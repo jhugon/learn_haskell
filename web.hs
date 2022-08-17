@@ -21,7 +21,6 @@ import Data.ByteString (ByteString)
 import Data.List
 import Data.Maybe
 import Data.String.Conversions
-import Data.Time.Calendar
 import GHC.Generics
 import Network.Wai
 import Network.Wai.Handler.Warp
