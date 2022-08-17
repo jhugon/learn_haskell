@@ -35,6 +35,7 @@ type API = "isalive" :> Get '[PlainText,JSON] [Char]
         :<|> "fibonacci" :> Capture "N" Integer :> Get '[JSON] Integer
         :<|> "chebyshev1st" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
         :<|> "chebyshev2nd" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
+        :<|> "laguerre" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
 
 server1 :: Server API
 server1 = return "OK"
@@ -42,6 +43,7 @@ server1 = return "OK"
     :<|> fibonacciHandler 
     :<|> chebyshev1stHandler
     :<|> chebyshev2ndHandler
+    :<|> laguerreHandler
          where factorialHandler :: Integer -> Handler Integer
                factorialHandler n = return $ factorial n
 
@@ -53,6 +55,9 @@ server1 = return "OK"
 
                chebyshev2ndHandler :: Double -> Integer -> Handler Double
                chebyshev2ndHandler x n = return $ chebyshev2nd x n
+
+               laguerreHandler :: Double -> Integer -> Handler Double
+               laguerreHandler x n = return $ laguerre x n
 
 apiProxy :: Proxy API
 apiProxy = Proxy
