@@ -70,5 +70,3 @@ app1 = serve apiProxy server1
 
 main :: IO ()
 main = run 8081 app1
-
-
