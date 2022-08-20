@@ -39,14 +39,21 @@ type API = "isalive" :> Get '[PlainText,JSON] [Char]
         :<|> "portnum" :> Get '[JSON] Int
 
 server1 :: Int -> Server API
-server1 nConfig = return "OK"
+server1 nConfig = isaliveHandler 
     :<|> factorialHandler 
     :<|> fibonacciHandler 
     :<|> chebyshev1stHandler
     :<|> chebyshev2ndHandler
     :<|> laguerreHandler
     :<|> portnum
-         where factorialHandler :: Integer -> Handler Integer
+         where isaliveHandler :: Handler [Char]
+               isaliveHandler = do
+                    -- do expects lines to be statments of the Handler monad. liftIO just converts an IO monad to a Handler one
+                    -- That's only okay b/c Handler has IO inside it or is compatible or something like that.
+                    liftIO $ putStrLn "Running /isalive"
+                    return "OK"
+
+               factorialHandler :: Integer -> Handler Integer
                factorialHandler n = return $ factorial n
 
                fibonacciHandler :: Integer -> Handler Integer
@@ -62,7 +69,9 @@ server1 nConfig = return "OK"
                laguerreHandler x n = return $ laguerre x n
 
                portnum :: Handler Int
-               portnum = return nConfig
+               portnum = do
+                    liftIO $ putStrLn "Running /portnum"
+                    return nConfig
 
 
 apiProxy :: Proxy API
