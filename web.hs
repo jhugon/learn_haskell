@@ -36,14 +36,16 @@ type API = "isalive" :> Get '[PlainText,JSON] [Char]
         :<|> "chebyshev1st" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
         :<|> "chebyshev2nd" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
         :<|> "laguerre" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
+        :<|> "portnum" :> Get '[JSON] Int
 
-server1 :: Server API
-server1 = return "OK"
+server1 :: Int -> Server API
+server1 nConfig = return "OK"
     :<|> factorialHandler 
     :<|> fibonacciHandler 
     :<|> chebyshev1stHandler
     :<|> chebyshev2ndHandler
     :<|> laguerreHandler
+    :<|> portnum
          where factorialHandler :: Integer -> Handler Integer
                factorialHandler n = return $ factorial n
 
@@ -59,17 +61,21 @@ server1 = return "OK"
                laguerreHandler :: Double -> Integer -> Handler Double
                laguerreHandler x n = return $ laguerre x n
 
+               portnum :: Handler Int
+               portnum = return nConfig
+
+
 apiProxy :: Proxy API
 apiProxy = Proxy
 
 -- 'serve' comes from servant and hands you a WAI Application,
 -- which you can think of as an "abstract" web application,
 -- not yet a webserver.
-app1 :: Application
-app1 = serve apiProxy server1
+app1 :: Int -> Application
+app1 portNum = serve apiProxy $ server1 portNum
 
 main :: IO ()
 main = do
     let portNum = 8081
     putStrLn $ "Server running at http://localhost:" ++ show portNum
-    run portNum app1
+    run portNum $ app1 portNum
