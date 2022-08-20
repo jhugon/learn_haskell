@@ -27,6 +27,7 @@ import Network.Wai.Handler.Warp
 import Servant
 import System.Directory
 import qualified Data.Aeson.Parser
+import Network.Wai.Logger (withStdoutLogger)
 
 import Chebyshev
 
@@ -87,4 +88,5 @@ main :: IO ()
 main = do
     let portNum = 8081
     putStrLn $ "Server running at http://localhost:" ++ show portNum
-    run portNum $ app1 portNum
+    withStdoutLogger $ \logger ->
+        runSettings (setPort portNum $ setLogger logger $ defaultSettings) $ app1 portNum
