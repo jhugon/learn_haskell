@@ -69,4 +69,7 @@ app1 :: Application
 app1 = serve apiProxy server1
 
 main :: IO ()
-main = run 8081 app1
+main = do
+    let portNum = 8081
+    putStrLn $ "Server running at http://localhost:" ++ show portNum
+    run portNum app1
