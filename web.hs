@@ -21,6 +21,7 @@ import Data.ByteString (ByteString,unpack)
 import Data.ByteString.UTF8 (toString)
 import Data.List
 import Data.Maybe
+import Data.Either
 import Data.String.Conversions
 import GHC.Generics
 import Network.Wai
@@ -30,6 +31,7 @@ import System.Directory
 import qualified Data.Aeson.Parser
 import Network.Wai.Logger (withStdoutLogger)
 import Network.HTTP.Req as R
+import Data.Yaml
 
 import Chebyshev
 
@@ -108,9 +110,37 @@ apiProxy = Proxy
 app1 :: Int -> Application
 app1 portNum = serve apiProxy $ server1 portNum
 
+-- Configuration with Yaml
+data ServerConfig = ServerConfig {
+    port :: Int
+} deriving (Show, Eq, Ord, Generic)
+
+instance FromJSON ServerConfig
+
+logConfigLoading :: IO (Either ParseException ServerConfig) -> String -> IO ()
+logConfigLoading x fn = do
+    -- The isSuccess is wrapped in an implicit IO monad in this statement.
+    -- This is helpful for unpacking the boolean from the IO monad it picks up with <$>
+    -- I couldn't figure out how to do it in loadConfig, because I couldn't unwrap it
+    -- Here it is easy!
+    isSuccess <- isRight <$> x
+    when isSuccess $ putStrLn $ "Successfully loaded config from " ++ fn
+    unless isSuccess $ putStrLn $ "Failed to load config " ++ fn ++ " using defaults"
+
+loadConfig :: IO ServerConfig
+loadConfig = do
+    let fn = "config-web.yaml"
+    let defaults = ServerConfig 8081
+    let rawDecoded = decodeFileEither fn
+    liftIO $ logConfigLoading rawDecoded fn
+    fromRight defaults <$> rawDecoded
+    
+------------------------------------------------------------------
+
 main :: IO ()
 main = do
-    let portNum = 8081
-    putStrLn $ "Server running at http://localhost:" ++ show portNum
+    config <- loadConfig
+    putStrLn $ "Server configuration: " ++ (show config)
+    putStrLn $ "Server running at http://localhost:" ++ ( show $ Main.port config)
     withStdoutLogger $ \logger ->
-        runSettings (setPort portNum $ setLogger logger $ defaultSettings) $ app1 portNum
+        runSettings (setPort (Main.port config) $ setLogger logger $ defaultSettings) $ app1 $ Main.port config
