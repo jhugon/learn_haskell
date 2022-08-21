@@ -124,8 +124,9 @@ logConfigLoading x fn = do
     -- I couldn't figure out how to do it in loadConfig, because I couldn't unwrap it
     -- Here it is easy!
     isSuccess <- isRight <$> x
+    xShow <- either show show <$> x
     when isSuccess $ putStrLn $ "Successfully loaded config from " ++ fn
-    unless isSuccess $ putStrLn $ "Failed to load config " ++ fn ++ " using defaults"
+    unless isSuccess $ putStrLn $ "Failed to load config " ++ fn ++ " due to '" ++ xShow  ++ "', using defaults"
 
 loadConfig :: IO ServerConfig
 loadConfig = do
