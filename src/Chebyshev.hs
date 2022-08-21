@@ -6,9 +6,11 @@ module Chebyshev
 , laguerre
 ) where
 
-factorial :: Integer -> Integer
-factorial 0 = 1
-factorial n = n * factorial (n-1)
+factorial :: Integer -> Maybe Integer
+factorial n
+    | n == 0    = Just 1
+    | n < 0     = Nothing
+    | otherwise = (n *) <$> factorial (n-1)
 
 fibonacci :: Integer -> Integer
 fibonacci 0 = 0

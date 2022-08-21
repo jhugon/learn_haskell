@@ -24,6 +24,8 @@ Requirements:
 To run:
 
     cabal test
+    ## or for a more detail:
+    cabal test --test-show-details=direct
 
 ## Cheatsheet
 
