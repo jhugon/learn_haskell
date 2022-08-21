@@ -12,3 +12,5 @@ main = do
     let z = 452
     putStrLn y
     print z
+    print alpha
+          where Just alpha = (*) <$> (Just 3) <*> (Just 4)
