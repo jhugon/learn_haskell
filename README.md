@@ -14,6 +14,17 @@ To run the programs run one of:
 For `web`, then go to http://localhost:8081/isalive or
 http://localhost:8081/chebyshev1st/5.234/10
 
+## Tests
+
+Requirements:
+
+    #cabal install --only-dependencies
+    cabal install hspec-discover
+
+To run:
+
+    cabal test
+
 ## Cheatsheet
 
 | Symbol         | Description                      |
