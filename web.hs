@@ -30,6 +30,7 @@ import System.Directory
 import qualified Data.Aeson.Parser
 import Network.Wai.Logger (withStdoutLogger)
 import Network.HTTP.Req as R
+import Data.Yaml
 
 import Chebyshev
 
@@ -108,9 +109,27 @@ apiProxy = Proxy
 app1 :: Int -> Application
 app1 portNum = serve apiProxy $ server1 portNum
 
+-- Configuration with Yaml
+data ServerConfig = ServerConfig {
+    port :: Int,
+} deriving (Show, Eq, Ord, Generic)
+
+instance FromJSON ServerConfig
+
+loadConfig :: IO Maybe ServerConfig
+loadConfig = do
+    let rawDecoded = decodeFileEither "config-web.yaml"
+    decoded <- case rawDecoded of
+            Right d -> d
+            Left error -> Nothing
+    return decoded
+    
+------------------------------------------------------------------
+
 main :: IO ()
 main = do
-    let portNum = 8081
+    config <- loadConfig
+    let portNum = Main.port config if 
     putStrLn $ "Server running at http://localhost:" ++ show portNum
     withStdoutLogger $ \logger ->
         runSettings (setPort portNum $ setLogger logger $ defaultSettings) $ app1 portNum
