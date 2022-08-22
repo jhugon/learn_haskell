@@ -17,16 +17,16 @@ spec = do
       (factorial (-1)) `shouldBe` Nothing
   describe "fionacci function" $ do
     it "can compute the n = 0 case" $ do
-      (fibonacci 0) `shouldBe` 0
+      (fibonacci 0) `shouldBe` Just 0
     it "can compute the n = 1 case" $ do
-      (fibonacci 1) `shouldBe` 1
+      (fibonacci 1) `shouldBe` Just 1
     it "can compute the n = 2 case" $ do
-      (fibonacci 2) `shouldBe` 1
+      (fibonacci 2) `shouldBe` Just 1
     it "can compute the n = 3 case" $ do
-      (fibonacci 3) `shouldBe` 2
+      (fibonacci 3) `shouldBe` Just 2
     it "can compute the n = 10 case" $ do
-      (fibonacci 10) `shouldBe` 55
+      (fibonacci 10) `shouldBe` Just 55
     it "can compute the n = 10 case" $ do
-      (fibonacci 15) `shouldBe` 610
+      (fibonacci 15) `shouldBe` Just 610
     it "can't compute the n = -1 case" $ do
-      (fibonacci (-1)) `shouldBe` 610
+      (fibonacci (-1)) `shouldBe` Nothing
