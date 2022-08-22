@@ -30,3 +30,53 @@ spec = do
       (fibonacci 15) `shouldBe` Just 610
     it "can't compute the n = -1 case" $ do
       (fibonacci (-1)) `shouldBe` Nothing
+  describe "chebyshev1st function" $ do
+    it "can compute the x = 0, n = 0 case" $ do
+      (chebyshev1st 0 0) `shouldBe` Just 1
+    it "can compute the x = 1000, n = 0 case" $ do
+      (chebyshev1st 1000 0) `shouldBe` Just 1
+    it "can compute the x = -1000, n = 0 case" $ do
+      (chebyshev1st (-1000) 0) `shouldBe` Just 1
+    it "can compute the x = 0, n = 1 case" $ do
+      (chebyshev1st 0 1) `shouldBe` Just 0
+    it "can compute the x = 1000, n = 1 case" $ do
+      (chebyshev1st 1000 1) `shouldBe` Just 1000
+    it "can compute the x = -1000, n = 1 case" $ do
+      (chebyshev1st (-1000) 1) `shouldBe` Just (-1000)
+    it "can compute the x = 0, n = 5 case" $ do
+      (chebyshev1st 0 5) `shouldBe` Just 0
+    it "can compute the x = 5, n = 5 case" $ do
+      (chebyshev1st 5 5) `shouldBe` Just 47525
+    it "can compute the x = -5, n = 5 case" $ do
+      (chebyshev1st (-5) 5) `shouldBe` Just (-47525)
+    it "can't compute the x = -5, n = -1 case" $ do
+      (chebyshev1st (-5) (-1)) `shouldBe` Nothing
+    it "can't compute the x = 10000, n = -1 case" $ do
+      (chebyshev1st 10000 (-1)) `shouldBe` Nothing
+    it "can't compute the x = 0, n = -1000 case" $ do
+      (chebyshev1st 0 (-1000)) `shouldBe` Nothing
+  describe "chebyshev2nd function" $ do
+    it "can compute the x = 0, n = 0 case" $ do
+      (chebyshev2nd 0 0) `shouldBe` Just 1
+    it "can compute the x = 1000, n = 0 case" $ do
+      (chebyshev2nd 1000 0) `shouldBe` Just 1
+    it "can compute the x = -1000, n = 0 case" $ do
+      (chebyshev2nd (-1000) 0) `shouldBe` Just 1
+    it "can compute the x = 0, n = 1 case" $ do
+      (chebyshev2nd 0 1) `shouldBe` Just 0
+    it "can compute the x = 1000, n = 1 case" $ do
+      (chebyshev2nd 1000 1) `shouldBe` Just 2000
+    it "can compute the x = -1000, n = 1 case" $ do
+      (chebyshev2nd (-1000) 1) `shouldBe` Just (-2000)
+    it "can compute the x = 0, n = 4 case" $ do
+      (chebyshev2nd 0 4) `shouldBe` Just 1
+    it "can compute the x = 5, n = 4 case" $ do
+      (chebyshev2nd 5 4) `shouldBe` Just 9701
+    it "can compute the x = -5, n = 4 case" $ do
+      (chebyshev2nd (-5) 4) `shouldBe` Just 9701
+    it "can't compute the x = -5, n = -1 case" $ do
+      (chebyshev2nd (-5) (-1)) `shouldBe` Nothing
+    it "can't compute the x = 10000, n = -1 case" $ do
+      (chebyshev2nd 10000 (-1)) `shouldBe` Nothing
+    it "can't compute the x = 0, n = -1000 case" $ do
+      (chebyshev2nd 0 (-1000)) `shouldBe` Nothing
