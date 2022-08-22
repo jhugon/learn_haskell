@@ -36,11 +36,11 @@ import Data.Yaml
 import Chebyshev
 
 type API = "isalive" :> Get '[PlainText,JSON] [Char]
-        :<|> "factorial" :> Capture "N" Integer :> Get '[JSON] Integer
-        :<|> "fibonacci" :> Capture "N" Integer :> Get '[JSON] Integer
-        :<|> "chebyshev1st" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
-        :<|> "chebyshev2nd" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
-        :<|> "laguerre" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] Double
+        :<|> "factorial" :> Capture "N" Integer :> Get '[JSON] (Maybe Integer)
+        :<|> "fibonacci" :> Capture "N" Integer :> Get '[JSON] (Maybe Integer)
+        :<|> "chebyshev1st" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] (Maybe Double)
+        :<|> "chebyshev2nd" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] (Maybe Double)
+        :<|> "laguerre" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] (Maybe Double)
         :<|> "portnum" :> Get '[JSON] Int
         :<|> "dl" :> Get '[JSON] [Char]
 
@@ -60,19 +60,19 @@ server1 nConfig = isaliveHandler
                     liftIO $ putStrLn "Running /isalive"
                     return "OK"
 
-               factorialHandler :: Integer -> Handler Integer
+               factorialHandler :: Integer -> Handler (Maybe Integer)
                factorialHandler n = return $ factorial n
 
-               fibonacciHandler :: Integer -> Handler Integer
+               fibonacciHandler :: Integer -> Handler (Maybe Integer)
                fibonacciHandler n = return $ fibonacci n
 
-               chebyshev1stHandler :: Double -> Integer -> Handler Double
+               chebyshev1stHandler :: Double -> Integer -> Handler (Maybe Double)
                chebyshev1stHandler x n = return $ chebyshev1st x n
 
-               chebyshev2ndHandler :: Double -> Integer -> Handler Double
+               chebyshev2ndHandler :: Double -> Integer -> Handler (Maybe Double)
                chebyshev2ndHandler x n = return $ chebyshev2nd x n
 
-               laguerreHandler :: Double -> Integer -> Handler Double
+               laguerreHandler :: Double -> Integer -> Handler (Maybe Double)
                laguerreHandler x n = return $ laguerre x n
 
                portnumHandler :: Handler Int

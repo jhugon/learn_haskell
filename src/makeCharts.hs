@@ -1,10 +1,11 @@
 import Graphics.Rendering.Chart.Easy
 import Graphics.Rendering.Chart.Backend.Cairo
 import Chebyshev
+import Data.Maybe
 
 signal :: [Double] -> Integer -> [(Double,Double)]
 --signal xs = [ (x,(sin (x*3.14159/45) + 1) / 2 * (sin (x*3.14159/5))) | x <- xs ]
-signal xs n = [ (x,chebyshev1st x n) | x <- xs ]
+signal xs n = [ (x,fromJust $ chebyshev1st x n) | x <- xs ]
 
 xs = [-1,(-0.99)..1]
 
