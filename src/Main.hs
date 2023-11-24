@@ -1,5 +1,7 @@
 module Main where
 
+default (Int, Float) -- sets default literal number types; stops compiler warm and uses fixed with Int instead of arb prec Integer
+
 main :: IO ()
 main = do
     putStrLn "Hello, Haskell!"
