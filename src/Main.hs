@@ -14,6 +14,7 @@ main = do
     print z
     print alpha
     print beta
-          -- examples of using applicatives
-          where Just alpha = (*) <$> (Just 3) <*> (Just 4) -- evaluates to  12
-                beta = (*) <$> (Just 3) <*> Nothing -- evaluates to Nothing
+  -- examples of using applicatives
+  where 
+    Just alpha = (*) <$> (Just 3) <*> (Just 4) -- evaluates to  12
+    beta       = (*) <$> (Just 3) <*> Nothing -- evaluates to Nothing
