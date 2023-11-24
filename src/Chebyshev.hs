@@ -48,6 +48,7 @@ laguerre_danger :: Double -> Integer -> Double
 laguerre_danger _ 0 = 1
 laguerre_danger x 1 = 1 - x
 laguerre_danger x n = numerator / fromInteger n
-         where term1 =  (2 * (fromInteger n - 1) + 1 - x) * laguerre_danger x (n-1)
-               term2 = fromInteger (n-1) * laguerre_danger x (n-2)
-               numerator = term1 - term2
+  where 
+    term1 =  (2 * (fromInteger n - 1) + 1 - x) * laguerre_danger x (n-1)
+    term2 = fromInteger (n-1) * laguerre_danger x (n-2)
+    numerator = term1 - term2
