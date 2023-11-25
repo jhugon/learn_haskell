@@ -34,22 +34,22 @@ resolver:
 #   subdirs:
 #   - auto-update
 #   - wai
-packages: []
+packages:
 # The following packages have been ignored due to incompatibility with the
 # resolver compiler, dependency conflicts with other packages
 # or unsatisfied dependencies.
-#- .
+- .
 
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
 #
-# extra-deps:
+extra-deps:
+- Chart-cairo-1.9.4.1
 # - acme-missiles-0.3
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
-# extra-deps: []
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

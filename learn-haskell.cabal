@@ -36,7 +36,7 @@ executable makeCharts
     Chebyshev
   -- other-extensions:
   build-depends:
-    Chart ^>=1.9,
+    Chart,
     Chart-cairo,
 
 executable web
@@ -46,19 +46,19 @@ executable web
     Chebyshev
   -- other-extensions:
   build-depends:
-    base-compat ^>=0.12,
-    mtl ^>=2.2,
-    bytestring ^>=0.10,
-    string-conversions ^>=0.4,
-    servant-server ^>= 0.19,
-    directory ^>=1.3,
-    aeson ^>=1.5,
-    wai ^>=3.2,
-    warp ^>=3.3,
-    wai-logger ^>= 2.4,
-    req == 3.9.0,
-    utf8-string ^>= 1.0.2,
-    yaml ^>= 0.11,
+    base-compat,
+    mtl,
+    bytestring,
+    string-conversions,
+    servant-server,
+    directory,
+    aeson,
+    wai,
+    warp,
+    wai-logger,
+    req,
+    utf8-string,
+    yaml,
 
 test-suite spec
   import:               shared-properties
@@ -70,4 +70,4 @@ test-suite spec
     ChebyshevSpec
     Chebyshev
   build-depends:
-    hspec ^>= 2.10,
+    hspec,
