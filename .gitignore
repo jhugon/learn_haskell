@@ -1,6 +1,7 @@
 log*
 *.log
 .stack-work
+stack.yaml.lock
 stack.sqlite*
 *.png
 .*.un~
