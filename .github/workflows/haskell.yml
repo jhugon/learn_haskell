@@ -16,13 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-haskell@v1
-      with:
-        ghc-version: '8.10.3'
-        cabal-version: '3.2'
     - uses: haskell-actions/setup@v2
       with:
-        ghc-version: '8.10.3' # Exact version of ghc to use
+        ghc-version: '9.4.8' # should match the one in the stack resolver?
         # cabal-version: 'latest'. Omitted, but defaults to 'latest'
         enable-stack: true
         stack-version: 'latest'
