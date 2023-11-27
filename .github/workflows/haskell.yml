@@ -41,6 +41,6 @@ jobs:
     - name: Update
       run: stack update
     - name: Build
-      run: stack build --enable-tests --enable-benchmarks all
+      run: stack build
     - name: Run tests
-      run: stack test all
+      run: stack test
