@@ -2,30 +2,24 @@
 
 Requirements:
 
-    sudo apt install haskell-platform
-    cabal update
+Install stack somehow?
+
+    sudo apt install libcairo2-dev
 
 To run the programs run one of:
 
-    cabal run learn-haskell
-    cabal run makeCharts
-    cabal run web
+    stack run learn-haskell
+    stack run makeCharts
+    stack run web
 
 For `web`, then go to http://localhost:8081/isalive or
 http://localhost:8081/chebyshev1st/5.234/10
 
 ## Tests
 
-Requirements:
-
-    #cabal install --only-dependencies
-    cabal install hspec-discover
-
 To run:
 
-    cabal test
-    ## or for a more detail:
-    cabal test --test-show-details=direct
+    stack test
 
 ## Cheatsheet
 
