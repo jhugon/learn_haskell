@@ -36,13 +36,13 @@ import Data.Yaml
 import Chebyshev
 
 type API = "isalive" :> Get '[PlainText,JSON] [Char]
-        :<|> "factorial" :> Capture "N" Integer :> Get '[JSON] (Maybe Integer)
-        :<|> "fibonacci" :> Capture "N" Integer :> Get '[JSON] (Maybe Integer)
-        :<|> "chebyshev1st" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] (Maybe Double)
-        :<|> "chebyshev2nd" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] (Maybe Double)
-        :<|> "laguerre" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] (Maybe Double)
-        :<|> "portnum" :> Get '[JSON] Int
-        :<|> "dl" :> Get '[JSON] [Char]
+    :<|> "factorial" :> Capture "N" Integer :> Get '[JSON] (Maybe Integer)
+    :<|> "fibonacci" :> Capture "N" Integer :> Get '[JSON] (Maybe Integer)
+    :<|> "chebyshev1st" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] (Maybe Double)
+    :<|> "chebyshev2nd" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] (Maybe Double)
+    :<|> "laguerre" :> Capture "x" Double :> Capture "N" Integer :> Get '[JSON] (Maybe Double)
+    :<|> "portnum" :> Get '[JSON] Int
+    :<|> "dl" :> Get '[JSON] [Char]
 
 server1 :: Int -> Server API
 server1 nConfig = isaliveHandler 
@@ -53,39 +53,40 @@ server1 nConfig = isaliveHandler
     :<|> laguerreHandler
     :<|> portnumHandler
     :<|> dlHandler
-         where isaliveHandler :: Handler [Char]
-               isaliveHandler = do
-                    -- do expects lines to be statments of the Handler monad. liftIO just converts an IO monad to a Handler one
-                    -- That's only okay b/c Handler has IO inside it or is compatible or something like that.
-                    liftIO $ putStrLn "Running /isalive"
-                    return "OK"
+  where 
+    isaliveHandler :: Handler [Char]
+    isaliveHandler = do
+        -- do expects lines to be statments of the Handler monad. liftIO just converts an IO monad to a Handler one
+        -- That's only okay b/c Handler has IO inside it or is compatible or something like that.
+        liftIO $ putStrLn "Running /isalive"
+        return "OK"
 
-               factorialHandler :: Integer -> Handler (Maybe Integer)
-               factorialHandler n = return $ factorial n
+    factorialHandler :: Integer -> Handler (Maybe Integer)
+    factorialHandler n = return $ factorial n
 
-               fibonacciHandler :: Integer -> Handler (Maybe Integer)
-               fibonacciHandler n = return $ fibonacci n
+    fibonacciHandler :: Integer -> Handler (Maybe Integer)
+    fibonacciHandler n = return $ fibonacci n
 
-               chebyshev1stHandler :: Double -> Integer -> Handler (Maybe Double)
-               chebyshev1stHandler x n = return $ chebyshev1st x n
+    chebyshev1stHandler :: Double -> Integer -> Handler (Maybe Double)
+    chebyshev1stHandler x n = return $ chebyshev1st x n
 
-               chebyshev2ndHandler :: Double -> Integer -> Handler (Maybe Double)
-               chebyshev2ndHandler x n = return $ chebyshev2nd x n
+    chebyshev2ndHandler :: Double -> Integer -> Handler (Maybe Double)
+    chebyshev2ndHandler x n = return $ chebyshev2nd x n
 
-               laguerreHandler :: Double -> Integer -> Handler (Maybe Double)
-               laguerreHandler x n = return $ laguerre x n
+    laguerreHandler :: Double -> Integer -> Handler (Maybe Double)
+    laguerreHandler x n = return $ laguerre x n
 
-               portnumHandler :: Handler Int
-               portnumHandler = do
-                    liftIO $ putStrLn "Running /portnum"
-                    return nConfig
+    portnumHandler :: Handler Int
+    portnumHandler = do
+        liftIO $ putStrLn "Running /portnum"
+        return nConfig
 
-               dlHandler :: Handler [Char]
-               dlHandler = do
-                    liftIO $ putStrLn "Running /dl"
-                    -- converts getWebPage IO monad value into required Handler monad
-                    -- return type of function
-                    liftIO $ getWebPage
+    dlHandler :: Handler [Char]
+    dlHandler = do
+        liftIO $ putStrLn "Running /dl"
+        -- converts getWebPage IO monad value into required Handler monad
+        -- return type of function
+        liftIO $ getWebPage
 
 getWebPage :: IO [Char]
 getWebPage = R.runReq R.defaultHttpConfig $ do
