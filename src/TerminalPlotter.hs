@@ -6,6 +6,34 @@ drawYAxis
 
 import Text.Printf (printf)
 
+-- Plot data points given in a list of the form 
+-- [(x1,y1),(x2,y2),...]
+-- width and height are the size of the axes data area in chars
+drawPlotData :: Int -> Int -> [(Float, Float)] -> [[Char]]
+drawPlotData width height points = drawLine <$> (reverse [0..(height-1)])
+    where
+        drawLine n = drawChar (linexs n) <$> [0..(width-1)]
+        linexs n = [fst point | point <- pointsAxes, n == snd point]
+        drawChar xs i = if i `elem` xs then '●' else ' '
+        pointsAxes = coordsDataToAxes width height points
+
+-- Convert from data coordinates to axes coordinates
+coordsDataToAxes :: Int -> Int -> [(Float, Float)] -> [(Int, Int)]
+coordsDataToAxes width height points = zip xsaxes ysaxes
+    where
+        xsaxes = [floor $ (x-xmin)*widthflt/xwidth | x <- xs]
+        ysaxes = [floor $ (y-ymin)*heightflt/ywidth | y <- ys]
+        xwidth = xmax-xmin
+        ywidth = ymax-ymin
+        xmax = maximum xs
+        ymax = maximum ys
+        xmin = minimum xs
+        ymin = minimum ys
+        xs = map fst points
+        ys = map snd points
+        widthflt = fromIntegral width-1
+        heightflt = fromIntegral height-1
+
 -- Make the X-axis line and label each end
 -- The x-axis is nchar wide
 drawXAxis :: Int -> Float -> Float -> Float -> [[Char]]
