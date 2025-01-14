@@ -6,6 +6,22 @@ drawYAxis
 
 import Text.Printf (printf)
 
+-- Draw a scatter plot
+scatter :: Int -> Int -> [(Float,Float)] -> [[Char]]
+scatter width height points = [ya ++ pd | (ya,pd) <- zip yaxis plotdata] ++ xaxis
+    where
+        plotdata = drawPlotData datawidth dataheight points
+        xaxis = drawXAxis (datawidth+1) xmin xmax ymin
+        yaxis = drawYAxis dataheight ymax
+        datawidth = width - 10
+        dataheight = height - 2
+        xmax = maximum xs
+        ymax = maximum ys
+        xmin = minimum xs
+        ymin = minimum ys
+        xs = map fst points
+        ys = map snd points
+
 -- Plot data points given in a list of the form 
 -- [(x1,y1),(x2,y2),...]
 -- width and height are the size of the axes data area in chars
