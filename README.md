@@ -15,6 +15,12 @@ To run the programs run one of:
 For `web`, then go to http://localhost:8081/isalive or
 http://localhost:8081/chebyshev1st/5.234/10
 
+For TerminalPlotter, run `ghci src/TerminalPlotter.hs` and then
+
+```haskell
+printLinesOfList $ scatter 50 10 [((0),0),(1,1),(2,2),(3,3),(4,4),(0,4),(4,0)]
+```
+
 ## Tests
 
 To run:
