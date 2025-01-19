@@ -45,3 +45,19 @@ So you can do
 
 and just add another `<*> (Just 5)` if the initial function takes 3 arguments,
 and so on.
+
+## Aplicatives and Monads
+
+After Haskell made Monad a subclass of Applicative, you can always use the new (applicative or functor) name for all of these:
+
+* `>>` is an old name for `*>`.
+* `return` is an old name for `pure`.
+* map and liftM are old names for fmap.
+* liftM2, liftM3, etc. are old names for liftA2, liftA3, etc.
+* `ap` is an old name for the `<*>` operator.
+* msum is an old name for asum.
+* sequence and sequence_ are old names for sequenceA and sequenceA_.
+* mapM and mapM_ are old names for traverse and traverse_.
+* forM and forM_ are old names for for and for_.
+
+All copied from https://entropicthoughts.com/haskell-procedural-programming#things-you-never-need-to-care-about by Christoffer Stjernlöf
