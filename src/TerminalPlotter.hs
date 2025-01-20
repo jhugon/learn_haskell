@@ -4,7 +4,15 @@ drawXAxis,
 drawYAxis
 ) where
 
+import Data.Maybe
 import Text.Printf (printf)
+import qualified System.Console.Terminal.Size as TermSize
+
+-- Draw a scatter plot of the given data points to the terminal
+scatterPlot :: [(Float,Float)] -> IO ()
+scatterPlot points = do
+    (width, height) <- termSizeUnpacked
+    printLinesOfList $ scatter width height points
 
 -- Draw a scatter plot
 scatter :: Int -> Int -> [(Float,Float)] -> [[Char]]
@@ -14,7 +22,7 @@ scatter width height points = [ya ++ pd | (ya,pd) <- zip yaxis plotdata] ++ xaxi
         xaxis = drawXAxis (datawidth+1) xmin xmax ymin
         yaxis = drawYAxis dataheight ymax
         datawidth = width - 10
-        dataheight = height - 2
+        dataheight = height - 3 -- axis line, labels line, and prompt line
         xmax = maximum xs
         ymax = maximum ys
         xmin = minimum xs
@@ -82,3 +90,11 @@ drawAll = drawYAxis 40 500 ++ drawXAxis 60 0 200 0
 -- Newlines are inserted after each line
 printLinesOfList :: [String] -> IO ()
 printLinesOfList lines = sequence_ $ map putStrLn lines
+
+-- terminal size as IO (width, height)
+termSizeUnpacked :: IO (Int, Int)
+termSizeUnpacked = do
+    window <- fromJust <$> TermSize.size
+    let width = TermSize.width window
+    let height = TermSize.height window
+    return (width, height)
