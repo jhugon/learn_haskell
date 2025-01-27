@@ -1,12 +1,9 @@
-module TerminalPlotter
-(
-drawXAxis,
-drawYAxis
-) where
+module TerminalPlotter where
 
 import Data.Maybe
 import Text.Printf (printf)
 import qualified System.Console.Terminal.Size as TermSize
+import TSVParser
 
 -- Draw a scatter plot of the given data points to the terminal
 scatterPlot :: [(Float,Float)] -> IO ()
