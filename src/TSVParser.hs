@@ -23,24 +23,6 @@ digits = many digit
 digits1 = many1 digit
 optionalnegsign = option "" $ string "-"
 
-floatFractionalPart :: ReadP String
-floatFractionalPart = do
-    dec <- string "."
-    fractionalPart <- digits1
-    return $ dec ++ fractionalPart
-
-floatIntWithDotAtEnd :: ReadP String
-floatIntWithDotAtEnd = do
-    digs <- digits1
-    string "."
-    return digs
-
-floatJustParse :: ReadP String
-floatJustParse = do
-    digs <- digits
-    fracpart <- floatFractionalPart
-    return $ digs ++ fracpart
-
 integer :: ReadP Int
 integer = do
     negsign <- optionalnegsign
@@ -49,10 +31,26 @@ integer = do
 
 -- use similar to python lex in https://docs.python.org/3/reference/lexical_analysis.html#floating-point-literals
 floatNumber :: ReadP Float
-floatNumber = do
-    negsign <- optionalnegsign
-    numpart <- digits1 <|> floatJustParse <|> floatIntWithDotAtEnd
-    return $ read $ negsign ++ numpart
+floatNumber = floatJustParse <|> readint <|> floatIntWithDotAtEnd
+    where
+        readint = do
+            negsign <- optionalnegsign
+            num <- digits1
+            return $ read $ negsign ++ num
+        floatJustParse = do
+            negsign <- optionalnegsign
+            digs <- option "0" $ digits1
+            fracpart <- floatFractionalPart
+            return $ read $ negsign ++ digs ++ fracpart
+        floatFractionalPart = do
+            dec <- string "."
+            fractionalPart <- digits1
+            return $ dec ++ fractionalPart
+        floatIntWithDotAtEnd = do
+            negsign <- optionalnegsign
+            digs <- digits1
+            string "."
+            return $ read $ negsign ++ digs
 
 twoSpaceSeperatedNumbersLine :: ReadP (Float, Float)
 twoSpaceSeperatedNumbersLine = do
@@ -61,5 +59,5 @@ twoSpaceSeperatedNumbersLine = do
     many1 space
     n2 <- floatNumber
     many space
-    satisfy (== '\n')
+    eof
     return (n1, n2)
