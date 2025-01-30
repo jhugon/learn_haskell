@@ -36,6 +36,8 @@ To run:
 | `liftIO`       | When you have something that returns an IO monad `f`, and you want to put it where some other (but containing IO) monad should be, then you can do `liftIO f`. It converts an IO monad into the required monad if compatible. |
 | `<$>`          | Shorthand for `fmap`; maps a function taking plain old types onto data wrapped in a functor, applicative, or monad, returning wrapped contents |
 | `<*>`          | Similar to `<$>`, but also the function is wrapped in an applicative, just like the arguments and result |
+| `sequenceA`    | flips around applicatives e.g. turns a list of Maybe into Just a list or Nothing |
+| `traverse`     | `Applicative f => (a -> f b) -> t a -> f (t b)` maps a function reurning an applicative and then flips the applicative outside of the e.g. list |
 
 So you can do 
 
