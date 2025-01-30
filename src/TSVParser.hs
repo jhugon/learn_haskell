@@ -6,18 +6,20 @@ import qualified Data.Text as T
 import Control.Applicative ((<|>))
 import Text.ParserCombinators.ReadP
 
-readSpacedTextData :: T.Text -> Maybe [(Float,Float)]
+readSpacedTextData :: T.Text -> Either String [(Float,Float)]
 readSpacedTextData text = traverse parseDealWithErrors lineliststring
     where
         linelisttext = T.lines text
         lineliststring = T.unpack <$> linelisttext
 
-parseDealWithErrors :: String -> Maybe (Float,Float)
-parseDealWithErrors line = fst <$> tuple
-        where
-            parse = readP_to_S twoSpaceSeperatedNumbersLine
-            parses = parse line
-            tuple = listToMaybe parses
+parseDealWithErrors :: String -> Either String (Float,Float)
+parseDealWithErrors line = do
+    if null parses 
+    then Left $ "Couldn't parse line: '" ++ line ++ "'"
+    else Right $ fst $ head parses
+    where
+        parse = readP_to_S twoSpaceSeperatedNumbersLine
+        parses = parse line
 
 space = satisfy isSpace 
 digit = satisfy isDigit
