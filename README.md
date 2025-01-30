@@ -39,7 +39,7 @@ To run:
 | `sequenceA`    | flips around applicatives e.g. turns a list of Maybe into Just a list or Nothing |
 | `traverse`     | `Applicative f => (a -> f b) -> t a -> f (t b)` maps a function reurning an applicative and then flips the applicative outside of the e.g. list |
 
-So you can do 
+With applicatives, you can do 
 
 ```haskell
 (*) <$> (Just 3) <*> (Just 4)
@@ -47,6 +47,24 @@ So you can do
 
 and just add another `<*> (Just 5)` if the initial function takes 3 arguments,
 and so on.
+
+### Examples with lists
+
+```haskell
+> let x = [1,2,3]
+> let y = Just <$> x
+> y
+[Just 1,Just 2,Just 3]
+> let z = Nothing : y
+> z
+[Nothing,Just 1,Just 2,Just 3]
+> sequenceA y
+Just [1,2,3]
+> sequenceA z
+Nothing
+> traverse Just x
+Just [1,2,3]
+```
 
 ## Applicatives and Monads
 
