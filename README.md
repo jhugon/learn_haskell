@@ -64,3 +64,5 @@ After Haskell made Monad a subclass of Applicative, you can always use the new
 All copied from
 https://entropicthoughts.com/haskell-procedural-programming#things-you-never-need-to-care-about
 by Christoffer Stjernlöf
+
+On the other hand, using these most general functions can make error messages more confusing when using lists. Concatenation with `++` instead of `<|>` (from Alternative) and mapping with `map` instead of `fmap` or `<$>` (from Functor) can be more readable and simpler when working with a list of monads/applicatives/etc.
