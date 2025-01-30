@@ -1,16 +1,25 @@
 module TSVParser where
 
 import Data.Char
-import Data.Maybe
+import Data.Either
 import qualified Data.Text as T
 import Control.Applicative ((<|>))
 import Text.ParserCombinators.ReadP
 
+-- Expects text input with two numbers per line
+-- They can be floats, but not in scientific notation
 readSpacedTextData :: T.Text -> Either String [(Float,Float)]
-readSpacedTextData text = traverse parseDealWithErrors lineliststring
+readSpacedTextData text = traverse (\(x,i) -> parseAndErrorsLineNo x i) lineandnolist
     where
         linelisttext = T.lines text
         lineliststring = T.unpack <$> linelisttext
+        lineandnolist :: [(String,Int)]
+        lineandnolist = zip lineliststring [1..]
+        parseAndErrorsLineNo :: String -> Int -> Either String (Float,Float)
+        parseAndErrorsLineNo line iline = handleeither $ parseDealWithErrors line
+            where
+                handleeither (Left  x) = Left $ "On line " ++ show iline ++ ": " ++ x
+                handleeither (Right x) = Right x
 
 parseDealWithErrors :: String -> Either String (Float,Float)
 parseDealWithErrors line = do
