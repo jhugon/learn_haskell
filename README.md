@@ -36,6 +36,8 @@ To run:
 | `liftIO`       | When you have something that returns an IO monad `f`, and you want to put it where some other (but containing IO) monad should be, then you can do `liftIO f`. It converts an IO monad into the required monad if compatible. |
 | `<$>`          | Shorthand for `fmap`; maps a function taking plain old types onto data wrapped in a functor, applicative, or monad, returning wrapped contents |
 | `<*>`          | Similar to `<$>`, but also the function is wrapped in an applicative, just like the arguments and result |
+| `sequenceA`    | flips around applicatives e.g. turns a list of Maybe into Just a list or Nothing |
+| `traverse`     | `Applicative f => (a -> f b) -> t a -> f (t b)` maps a function reurning an applicative and then flips the applicative outside of the e.g. list |
 
 So you can do 
 
@@ -64,3 +66,21 @@ After Haskell made Monad a subclass of Applicative, you can always use the new
 All copied from
 https://entropicthoughts.com/haskell-procedural-programming#things-you-never-need-to-care-about
 by Christoffer Stjernlöf
+
+On the other hand, using these most general functions can make error messages more confusing when using lists. Concatenation with `++` instead of `<|>` (from Alternative) and mapping with `map` instead of `fmap` or `<$>` (from Functor) can be more readable and simpler when working with a list of monads/applicatives/etc.
+
+## Do Notation
+
+In the Monad do notation,
+
+```
+do 
+    a <- as
+    bs a
+```
+Translates to `as >>= bs`.
+
+-  `x <- func`: The return value of func must be the monad the do expects. The x is unpacked out of the monad for use in later lines.
+- `func`: The return value of func must be the monad the do expects. The contents of the return value are discarded (this is just for the side-effects)
+- `let x = func`: use this if you want to capture a return value that’s not an instance of the monad e.g. if it’s a pure function. You could instead substitute with:`x <- return $ func`
+- `return x` wraps a value in the monad if needed. pure and return are equivalent.
