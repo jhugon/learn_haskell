@@ -1,22 +1,24 @@
 module TSVParser where
 
+import Data.Char
 import Data.Maybe
 import qualified Data.Text as T
-import Text.ParserCombinators.ReadP
-import Data.Char
 import Control.Applicative ((<|>))
+import Text.ParserCombinators.ReadP
 
--- readSpacedTextData :: T.Text -> [(Float,Float)]
--- readSpacedTextData text = textToDataLine <$> linelist
---     where linelist = T.lines text
+readSpacedTextData :: T.Text -> Maybe [(Float,Float)]
+readSpacedTextData text = traverse parseDealWithErrors lineliststring
+    where
+        linelisttext = T.lines text
+        lineliststring = T.unpack <$> linelisttext
 
--- parseTwoNumbersLine :: String -> ReadP (Float, Float)
--- parseTwoNumbersLine txt = do
---     parses <- readP_to_S twoSpaceSeperatedNumbersLine txt
---     let noparses = 0 == (length parses)
---     if noparses then error "sldkfjasldfkjlasdf"
---     let [((x,y),"")] = parses
-        
+parseDealWithErrors :: String -> Maybe (Float,Float)
+parseDealWithErrors line = fst <$> tuple
+        where
+            parse = readP_to_S twoSpaceSeperatedNumbersLine
+            parses = parse line
+            tuple = listToMaybe parses
+
 space = satisfy isSpace 
 digit = satisfy isDigit
 digits = many digit
