@@ -1,9 +1,22 @@
 module TerminalPlotter where
 
 import Data.Maybe
+import qualified Data.Text as T
 import Text.Printf (printf)
 import qualified System.Console.Terminal.Size as TermSize
 import TSVParser
+
+runScatterPlotFromFile :: String -> IO ()
+runScatterPlotFromFile fn = do
+    contents <- readFile fn
+    let dat = T.pack contents
+    runScatterPlotFromText dat
+
+runScatterPlotFromText :: T.Text -> IO ()
+runScatterPlotFromText text = handlerundata $ readSpacedTextData text
+    where
+        handlerundata (Right dat) = scatterPlot dat
+        handlerundata (Left msg) = putStrLn msg
 
 -- Draw a scatter plot of the given data points to the terminal
 scatterPlot :: [(Float,Float)] -> IO ()
