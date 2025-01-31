@@ -9,7 +9,7 @@ import Text.ParserCombinators.ReadP
 -- Expects text input with two numbers per line
 -- They can be floats, but not in scientific notation
 readSpacedTextData :: T.Text -> Either String [(Float,Float)]
-readSpacedTextData text = traverse (\(x,i) -> parseAndErrorsLineNo x i) lineandnolist
+readSpacedTextData text = traverse (uncurry parseAndErrorsLineNo) lineandnolist
     where
         linelisttext = T.lines text
         lineliststring = T.unpack <$> linelisttext
@@ -22,13 +22,10 @@ readSpacedTextData text = traverse (\(x,i) -> parseAndErrorsLineNo x i) lineandn
                 handleeither (Right x) = Right x
 
 parseDealWithErrors :: String -> Either String (Float,Float)
-parseDealWithErrors line = do
-    if null parses 
-    then Left $ "Couldn't parse line: '" ++ line ++ "'"
-    else Right $ fst $ head parses
+parseDealWithErrors line = makeresult $ readP_to_S twoSpaceSeperatedNumbersLine line
     where
-        parse = readP_to_S twoSpaceSeperatedNumbersLine
-        parses = parse line
+        makeresult ((parse,rest):_) = Right parse
+        makeresult []               = Left $ "Couldn't parse line: '" ++ line ++ "'"
 
 space = satisfy isSpace 
 digit = satisfy isDigit
@@ -36,20 +33,20 @@ digits = many digit
 digits1 = many1 digit
 optionalnegsign = option "" $ string "-"
 
-integer :: ReadP Int
-integer = do
+matchint :: ReadP String
+matchint = do
     negsign <- optionalnegsign
     intliteral <- digits1
-    return $ read $ negsign ++ intliteral
+    return $ negsign ++ intliteral
+
+integer :: ReadP Int
+integer = read <$> matchint
 
 -- use similar to python lex in https://docs.python.org/3/reference/lexical_analysis.html#floating-point-literals
 floatNumber :: ReadP Float
 floatNumber = floatJustParse <|> readint <|> floatIntWithDotAtEnd
     where
-        readint = do
-            negsign <- optionalnegsign
-            num <- digits1
-            return $ read $ negsign ++ num
+        readint = read <$> matchint
         floatJustParse = do
             negsign <- optionalnegsign
             digs <- option "0" $ digits1
