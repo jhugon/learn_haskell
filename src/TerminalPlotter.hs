@@ -6,6 +6,14 @@ import Text.Printf (printf)
 import qualified System.Console.Terminal.Size as TermSize
 import TSVParser
 
+default (Int, Float)
+
+main :: IO ()
+main = do
+    runScatterPlotFromFile "testdata.txt"
+
+
+
 runScatterPlotFromFile :: String -> IO ()
 runScatterPlotFromFile fn = do
     contents <- readFile fn
@@ -99,7 +107,7 @@ drawAll = drawYAxis 40 500 ++ drawXAxis 60 0 200 0
 -- Prints each entry of lines to stdout
 -- Newlines are inserted after each line
 printLinesOfList :: [String] -> IO ()
-printLinesOfList lines = sequence_ $ map putStrLn lines
+printLinesOfList lns = sequence_ $ map putStrLn lns
 
 -- terminal size as IO (width, height)
 termSizeUnpacked :: IO (Int, Int)

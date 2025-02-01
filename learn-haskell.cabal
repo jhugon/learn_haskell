@@ -60,6 +60,16 @@ executable web
     utf8-string,
     yaml,
 
+executable hsplot
+  import:               shared-properties
+  main-is:              TerminalPlotter.hs
+  other-modules:
+    TSVParser
+  -- other-extensions:
+  build-depends:
+    text,
+    terminal-size,
+
 test-suite spec
   import:               shared-properties
   type:                 exitcode-stdio-1.0

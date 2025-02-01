@@ -1,7 +1,6 @@
 module TSVParser where
 
 import Data.Char
-import Data.Either
 import qualified Data.Text as T
 import Control.Applicative ((<|>))
 import Text.ParserCombinators.ReadP
@@ -24,7 +23,7 @@ readSpacedTextData text = traverse (uncurry parseAndErrorsLineNo) lineandnolist
 parseDealWithErrors :: String -> Either String (Float,Float)
 parseDealWithErrors line = makeresult $ readP_to_S twoSpaceSeperatedNumbersLine line
     where
-        makeresult ((parse,rest):_) = Right parse
+        makeresult ((parse,_):_) = Right parse
         makeresult []               = Left $ "Couldn't parse line: '" ++ line ++ "'"
 
 space = satisfy isSpace 
