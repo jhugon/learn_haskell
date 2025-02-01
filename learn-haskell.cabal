@@ -23,9 +23,9 @@ common                  shared-properties
   build-depends:        base >=4.12
   ghc-options:          -Wall
 
-executable learn-haskell
+executable helloworld
   import:               shared-properties
-  main-is:              Main.hs
+  main-is:              helloworld.hs
   -- other-modules:
   -- other-extensions:
 
@@ -62,9 +62,11 @@ executable web
 
 executable hsplot
   import:               shared-properties
-  main-is:              TerminalPlotter.hs
+  hs-source-dirs:       src/hsplot
+  main-is:              hsplot.hs
   other-modules:
     TSVParser
+    TerminalPlotter
   -- other-extensions:
   build-depends:
     text,
@@ -73,7 +75,7 @@ executable hsplot
 test-suite spec
   import:               shared-properties
   type:                 exitcode-stdio-1.0
-  main-is:              Spec.hs
+  main-is:              Main.hs
   hs-source-dirs:       test
   other-modules:
     SpecHelper
