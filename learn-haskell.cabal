@@ -71,6 +71,7 @@ executable hsplot
   build-depends:
     text,
     terminal-size,
+    optparse-applicative,
 
 test-suite spec
   import:               shared-properties
