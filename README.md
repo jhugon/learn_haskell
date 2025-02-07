@@ -102,3 +102,24 @@ Translates to `as >>= bs`.
 - `func`: The return value of func must be the monad the do expects. The contents of the return value are discarded (this is just for the side-effects)
 - `let x = func`: use this if you want to capture a return value that’s not an instance of the monad e.g. if it’s a pure function. You could instead substitute with:`x <- return $ func`
 - `return x` wraps a value in the monad if needed. pure and return are equivalent.
+
+## Modules
+
+If you defined a data type, then this only exports the type constructor:
+
+```
+module XXX
+    (
+        MyDatatype
+    )
+```
+
+This exports the data constructor (and accessor functions for a record) as
+well:
+
+```
+module XXX
+    (
+        MyDatatype (..)
+    )
+```
