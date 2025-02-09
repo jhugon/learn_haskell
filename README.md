@@ -27,7 +27,7 @@ To run:
 | Symbol         | Description                      |
 | -------------- | -------------------------------- |
 | `$`            | Use in place of parenthesis for function calls/applicatives/etc. `a (b c) = a $ b c` |
-| `.`            | Function composition, so use in place of `$` when it's just simple function calls |
+| `.`            | Function composition, useful in the "point free style" with no arguments `f = g . h` |
 | `liftIO`       | When you have something that returns an IO monad `f`, and you want to put it where some other (but containing IO) monad should be, then you can do `liftIO f`. It converts an IO monad into the required monad if compatible. |
 | `<$>`          | Shorthand for `fmap`; maps a function taking plain old types onto data wrapped in a functor, applicative, or monad, returning wrapped contents |
 | `<*>`          | Similar to `<$>`, but also the function is wrapped in an applicative, just like the arguments and result |
