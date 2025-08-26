@@ -73,6 +73,13 @@ executable hsplot
     terminal-size,
     optparse-applicative,
 
+executable nbody
+  import:               shared-properties
+  hs-source-dirs:       src/nbody
+  main-is:              nbody.hs
+  -- other-modules:
+  -- other-extensions:
+
 test-suite spec
   import:               shared-properties
   type:                 exitcode-stdio-1.0
