@@ -1,5 +1,7 @@
 module Main where
 
+import System.Random
+
 default (Int, Float)
 
 data Vector = Vector
@@ -54,6 +56,15 @@ instance Show Body where
       ++ show (mass body)
       ++ " )"
 
+randomBody :: IO Body
+randomBody = do
+  Body <$> randVec <*> randVec <*> return 1.0
+  where
+    range = (-1.0, 1.0)
+    randFloat = randomRIO range
+    randVec :: IO Vector
+    randVec = Vector <$> randFloat <*> randFloat
+
 accelerationFromBody :: Float -> Body -> Body -> Vector
 accelerationFromBody g self other = vectorScale magnitude direction
   where
@@ -99,9 +110,11 @@ runSimulation g dt = iterate (stepSimulation g dt)
 main :: IO ()
 main = do
   let g = 1.0
+  let n = 2
   let dt = 0.1
   let niter = 100
-  let simulationResults = iterate (stepSimulation g dt) testbodies
+  initialBodies <- traverse (const randomBody) [1 .. n]
+  let simulationResults = iterate (stepSimulation g dt) initialBodies
   let finiteSimulationResults = take niter simulationResults
   print $ last finiteSimulationResults
 

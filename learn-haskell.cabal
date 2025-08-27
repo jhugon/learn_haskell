@@ -79,6 +79,8 @@ executable nbody
   main-is:              nbody.hs
   -- other-modules:
   -- other-extensions:
+  build-depends:
+    random,
 
 test-suite spec
   import:               shared-properties
