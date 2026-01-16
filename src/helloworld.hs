@@ -16,22 +16,22 @@ main = do
     print z
     print alpha
     print beta
-    print $ splitBefore' 5 [1..4]
-    print $ splitBefore' 5 []
-    print $ splitBefore' 5 [1]
-    print $ splitBefore' 5 [5]
-    print $ splitBefore' 5 [1..10]
-    print $ splitBefore' 5 [2..10]
-    print $ splitBefore' 5 [3..10]
-    print $ splitBefore' 5 [4..10]
-    print $ splitBefore' 5 $ [1..10] ++ [1..10]
-    print $ splitBefore' 5 $ [1..10] ++ [1..10] ++ [1..10]
-    print $ splitBefore' 5 $ [1..10] ++ [1..4] ++ [1..10]
-    print $ splitBefore' 5 $ [1..4] ++ [1..10] ++ [1..10]
-    print $ splitBefore' 5 [5,5,5]
-    print $ splitBefore' 5 [5..10]
-    print $ splitBefore' 5 [5,6,7,5,6,7]
-    print $ splitBefore1' 5 [5,5,5]
+    print $ splitDrop' 5 [1..4]
+    print $ splitDrop' 5 []
+    print $ splitDrop' 5 [1]
+    print $ splitDrop' 5 [5]
+    print $ splitDrop' 5 [1..10]
+    print $ splitDrop' 5 [2..10]
+    print $ splitDrop' 5 [3..10]
+    print $ splitDrop' 5 [4..10]
+    print $ splitDrop' 5 $ [1..10] ++ [1..10]
+    print $ splitDrop' 5 $ [1..10] ++ [1..10] ++ [1..10]
+    print $ splitDrop' 5 $ [1..10] ++ [1..4] ++ [1..10]
+    print $ splitDrop' 5 $ [1..4] ++ [1..10] ++ [1..10]
+    print $ splitDrop' 5 [5,5,5]
+    print $ splitDrop' 5 [1..5]
+    print $ splitDrop' 5 [5..10]
+    print $ splitDrop' 5 [5,6,7,5,6,7]
   -- examples of using applicatives
   where 
     Just alpha = (*) <$> (Just 3) <*> (Just 4) -- evaluates to  12
@@ -61,6 +61,17 @@ splitBefore' x (y:z:a:l)
         mergeWithFirstEntry :: [a] -> [[a]] -> [[a]]
         mergeWithFirstEntry a1 [] = [a1]
         mergeWithFirstEntry a1 (a2:a3) = (a1++a2):a3
+
+-- Splits a list and drops each occurance of x
+splitDrop' :: (Eq a) => a -> [a] -> [[a]]
+splitDrop' _ [] = []
+splitDrop' x l =
+    case splitDrop1' x l of
+        ([],[]) -> []
+        ([],y)  -> splitDrop' x y
+        (y,[])  -> [y]
+        (y,z)   -> y:(splitDrop' x z)
+
 
 -- Splits a list after first occurance of x
 splitAfter1' :: (Eq a) => a -> [a] -> ([a],[a])
