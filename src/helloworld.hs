@@ -16,13 +16,22 @@ main = do
     print z
     print alpha
     print beta
-    print $ splitAfter' 5 [1..4]
-    print $ splitAfter' 5 []
-    print $ splitAfter' 5 [1..10]
-    print $ splitAfter' 5 $ [1..10] ++ [1..10]
-    print $ splitAfter' 5 $ [1..10] ++ [1..10] ++ [1..10]
-    print $ splitAfter' 5 $ [1..10] ++ [1..4] ++ [1..10]
-    print $ splitAfter' 5 $ [1..4] ++ [1..10] ++ [1..10]
+    print $ splitBefore' 5 [1..4]
+    print $ splitBefore' 5 []
+    print $ splitBefore' 5 [1]
+    print $ splitBefore' 5 [5]
+    print $ splitBefore' 5 [1..10]
+    print $ splitBefore' 5 [2..10]
+    print $ splitBefore' 5 [3..10]
+    print $ splitBefore' 5 [4..10]
+    print $ splitBefore' 5 $ [1..10] ++ [1..10]
+    print $ splitBefore' 5 $ [1..10] ++ [1..10] ++ [1..10]
+    print $ splitBefore' 5 $ [1..10] ++ [1..4] ++ [1..10]
+    print $ splitBefore' 5 $ [1..4] ++ [1..10] ++ [1..10]
+    print $ splitBefore' 5 [5,5,5]
+    print $ splitBefore' 5 [5..10]
+    print $ splitBefore' 5 [5,6,7,5,6,7]
+    print $ splitBefore1' 5 [5,5,5]
   -- examples of using applicatives
   where 
     Just alpha = (*) <$> (Just 3) <*> (Just 4) -- evaluates to  12
@@ -31,13 +40,27 @@ main = do
 -- Splits a list after each occurance of x
 splitAfter' :: (Eq a) => a -> [a] -> [[a]]
 splitAfter' _ [] = []
-splitAfter' x (y:l)
-    | x == y    = [[y]] ++ r
-    | otherwise = case r of
-                       (ry:rl) -> (y:ry):rl
-                       []      -> [[y]]
-        where
-            r = splitAfter' x l
+splitAfter' x l =
+    case splitAfter1' x l of
+        ([],y) -> [y]
+        (y,[]) -> [y]
+        (y,z)  -> y:(splitAfter' x z)
+
+-- Splits a list before each occurance of x
+splitBefore' :: (Eq a) => a -> [a] -> [[a]]
+splitBefore' _ [] = []
+splitBefore' x (y:[]) = [[y]]
+splitBefore' x (y:z:[])
+    | x == z           = [[y],[z]]
+    | otherwise        = [[y,z]]
+splitBefore' x (y:z:a:l)
+    | x == z           = [[y]] ++ (splitBefore' x (z:a:l))
+    | x == a           = [[y,z]] ++ (splitBefore' x (a:l))
+    | otherwise        = mergeWithFirstEntry [y,z] $ splitBefore' x $ a:l
+    where
+        mergeWithFirstEntry :: [a] -> [[a]] -> [[a]]
+        mergeWithFirstEntry a1 [] = [a1]
+        mergeWithFirstEntry a1 (a2:a3) = (a1++a2):a3
 
 -- Splits a list after first occurance of x
 splitAfter1' :: (Eq a) => a -> [a] -> ([a],[a])
