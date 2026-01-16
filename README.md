@@ -87,8 +87,6 @@ be more readable and simpler when working with a list of
 monads/applicatives/etc. But beware that `++` doesn't work with Text, `<>` must
 be used!
 
-## Alternative
-
 ## Do Notation
 
 In the Monad do notation,
