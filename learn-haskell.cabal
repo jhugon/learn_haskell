@@ -26,7 +26,8 @@ common                  shared-properties
 executable helloworld
   import:               shared-properties
   main-is:              helloworld.hs
-  -- other-modules:
+  other-modules:
+    SplitLists
   -- other-extensions:
 
 executable makeCharts
