@@ -84,6 +84,16 @@ executable nbody
   build-depends:
     random,
 
+executable parse-permutations
+  import:               shared-properties
+  main-is:              parse-permutations.hs
+  -- other-modules:
+  -- other-extensions:
+  build-depends:
+    megaparsec,
+    parser-combinators,
+    text,
+
 test-suite spec
   import:               shared-properties
   type:                 exitcode-stdio-1.0
