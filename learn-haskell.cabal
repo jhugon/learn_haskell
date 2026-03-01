@@ -43,6 +43,7 @@ executable makeCharts
 executable web
   import:               shared-properties
   main-is:              web.hs
+  ghc-options:          -threaded -Wall
   other-modules:
     Chebyshev
   -- other-extensions:
@@ -86,7 +87,7 @@ executable nbody
 test-suite spec
   import:               shared-properties
   type:                 exitcode-stdio-1.0
-  main-is:              Main.hs
+  main-is:              helloworld.hs
   hs-source-dirs:       test
   other-modules:
     SpecHelper
