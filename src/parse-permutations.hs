@@ -3,8 +3,7 @@
 module Main where
 
 import Control.Applicative.Permutations
-import Data.Char (isAlphaNum, isSpace)
-import Data.List.NonEmpty
+import Data.Char (isAlphaNum)
 import Data.Text as T
 import Data.Text.IO as TIO
 import Data.Void
@@ -24,9 +23,12 @@ matchConfig = do
 
 matchConfigLines :: Parser Config
 matchConfigLines = do
-  atext <- matchConfigLine matchString "a"
-  btext <- matchConfigLine matchString "b"
-  ctext <- matchConfigLine matchString "c"
+  let permutation =
+        (,,)
+          <$> toPermutation (matchConfigLine matchString "a")
+          <*> toPermutation (matchConfigLine matchString "b")
+          <*> toPermutation (matchConfigLine matchString "c")
+  (atext, _, _) <- runPermutation permutation
   let config = MkConfig {a = atext, b = 3, c = 3.2}
   pure config
 
